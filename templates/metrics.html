@@ -1,0 +1,329 @@
+{% extends "base.html" %}
+
+{% block title %}System Metrics - AutoAssess Admin{% endblock %}
+
+{% block content %}
+<section class="min-h-screen px-4 sm:px-6 lg:px-8 py-12">
+    <div class="max-w-7xl mx-auto">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-12 slide-in">
+            <div>
+                <h1 class="text-4xl lg:text-5xl font-bold text-white mb-2">
+                    System <span class="bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent">Metrics</span>
+                </h1>
+                <p class="text-xl text-white/80">Monitor system performance and analytics</p>
+            </div>
+            <a href="{{ url_for('admin') }}" 
+               class="bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 inline-flex items-center">
+                <i class="fas fa-arrow-left mr-2"></i>
+                Back to Dashboard
+            </a>
+        </div>
+
+        <!-- Key Metrics Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+            <div class="glass-effect rounded-2xl p-6 text-center slide-in">
+                <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full flex items-center justify-center mx-auto mb-4 pulse-glow">
+                    <i class="fas fa-users text-white text-2xl"></i>
+                </div>
+                <div class="text-3xl font-bold text-blue-400 mb-2">1,247</div>
+                <div class="text-white/80">Total Users</div>
+                <div class="text-green-400 text-sm mt-1">
+                    <i class="fas fa-arrow-up mr-1"></i>12% this month
+                </div>
+            </div>
+
+            <div class="glass-effect rounded-2xl p-6 text-center slide-in" style="animation-delay: 0.1s;">
+                <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4 pulse-glow" style="animation-delay: 0.3s;">
+                    <i class="fas fa-car text-white text-2xl"></i>
+                </div>
+                <div class="text-3xl font-bold text-green-400 mb-2">5,892</div>
+                <div class="text-white/80">Assessments</div>
+                <div class="text-green-400 text-sm mt-1">
+                    <i class="fas fa-arrow-up mr-1"></i>8% this week
+                </div>
+            </div>
+
+            <div class="glass-effect rounded-2xl p-6 text-center slide-in" style="animation-delay: 0.2s;">
+                <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4 pulse-glow" style="animation-delay: 0.6s;">
+                    <i class="fas fa-percentage text-white text-2xl"></i>
+                </div>
+                <div class="text-3xl font-bold text-purple-400 mb-2">96.8%</div>
+                <div class="text-white/80">Accuracy Rate</div>
+                <div class="text-green-400 text-sm mt-1">
+                    <i class="fas fa-arrow-up mr-1"></i>2% improved
+                </div>
+            </div>
+
+            <div class="glass-effect rounded-2xl p-6 text-center slide-in" style="animation-delay: 0.3s;">
+                <div class="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-500 rounded-full flex items-center justify-center mx-auto mb-4 pulse-glow" style="animation-delay: 0.9s;">
+                    <i class="fas fa-clock text-white text-2xl"></i>
+                </div>
+                <div class="text-3xl font-bold text-orange-400 mb-2">2.3s</div>
+                <div class="text-white/80">Avg Processing</div>
+                <div class="text-green-400 text-sm mt-1">
+                    <i class="fas fa-arrow-down mr-1"></i>15% faster
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+            <!-- Usage Chart -->
+            <div class="glass-effect rounded-3xl p-8 slide-in">
+                <h3 class="text-2xl font-bold text-white mb-6">
+                    <i class="fas fa-chart-line mr-2"></i>
+                    Daily Assessments
+                </h3>
+                <div class="h-64 flex items-center justify-center">
+                    <canvas id="usageChart" class="w-full h-full"></canvas>
+                </div>
+            </div>
+
+            <!-- Vehicle Type Distribution -->
+            <div class="glass-effect rounded-3xl p-8 slide-in" style="animation-delay: 0.2s;">
+                <h3 class="text-2xl font-bold text-white mb-6">
+                    <i class="fas fa-chart-pie mr-2"></i>
+                    Vehicle Type Distribution
+                </h3>
+                <div class="h-64 flex items-center justify-center">
+                    <canvas id="distributionChart" class="w-full h-full"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="glass-effect rounded-3xl p-8 mb-12 slide-in">
+            <h3 class="text-2xl font-bold text-white mb-6">
+                <i class="fas fa-activity mr-2"></i>
+                System Activity
+            </h3>
+            
+            <div class="space-y-4">
+                <div class="flex items-center justify-between bg-white/5 rounded-lg p-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center">
+                            <i class="fas fa-car text-white"></i>
+                        </div>
+                        <div>
+                            <p class="text-white font-medium">4-Wheeler assessment completed</p>
+                            <p class="text-white/60 text-sm">Maruti Swift - ₹15,200 estimated cost</p>
+                        </div>
+                    </div>
+                    <span class="text-white/60 text-sm">2 min ago</span>
+                </div>
+
+                <div class="flex items-center justify-between bg-white/5 rounded-lg p-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
+                            <i class="fas fa-user-plus text-white"></i>
+                        </div>
+                        <div>
+                            <p class="text-white font-medium">New user registration</p>
+                            <p class="text-white/60 text-sm">User: rajesh.kumar@email.com</p>
+                        </div>
+                    </div>
+                    <span class="text-white/60 text-sm">5 min ago</span>
+                </div>
+
+                <div class="flex items-center justify-between bg-white/5 rounded-lg p-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center">
+                            <i class="fas fa-file-pdf text-white"></i>
+                        </div>
+                        <div>
+                            <p class="text-white font-medium">PDF report generated</p>
+                            <p class="text-white/60 text-sm">Honda Activa damage report</p>
+                        </div>
+                    </div>
+                    <span class="text-white/60 text-sm">8 min ago</span>
+                </div>
+
+                <div class="flex items-center justify-between bg-white/5 rounded-lg p-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-yellow-500 rounded-full flex items-center justify-center">
+                            <i class="fas fa-check-circle text-white"></i>
+                        </div>
+                        <div>
+                            <p class="text-white font-medium">User approved</p>
+                            <p class="text-white/60 text-sm">priya.sharma@email.com approved by admin</p>
+                        </div>
+                    </div>
+                    <span class="text-white/60 text-sm">12 min ago</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Performance Metrics -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Model Performance -->
+            <div class="glass-effect rounded-2xl p-8 slide-in">
+                <h3 class="text-xl font-bold text-white mb-6">
+                    <i class="fas fa-brain mr-2"></i>
+                    Model Performance
+                </h3>
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center">
+                        <span class="text-white/80">2-Wheeler Model</span>
+                        <span class="text-blue-400 font-bold">97.2%</span>
+                    </div>
+                    <div class="w-full bg-white/10 rounded-full h-2">
+                        <div class="bg-gradient-to-r from-blue-500 to-cyan-500 h-2 rounded-full" style="width: 97.2%"></div>
+                    </div>
+                    
+                    <div class="flex justify-between items-center">
+                        <span class="text-white/80">4-Wheeler Model</span>
+                        <span class="text-green-400 font-bold">96.8%</span>
+                    </div>
+                    <div class="w-full bg-white/10 rounded-full h-2">
+                        <div class="bg-gradient-to-r from-green-500 to-emerald-500 h-2 rounded-full" style="width: 96.8%"></div>
+                    </div>
+                    
+                    <div class="flex justify-between items-center">
+                        <span class="text-white/80">6-Wheeler Model</span>
+                        <span class="text-purple-400 font-bold">95.4%</span>
+                    </div>
+                    <div class="w-full bg-white/10 rounded-full h-2">
+                        <div class="bg-gradient-to-r from-purple-500 to-pink-500 h-2 rounded-full" style="width: 95.4%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- System Health -->
+            <div class="glass-effect rounded-2xl p-8 slide-in" style="animation-delay: 0.2s;">
+                <h3 class="text-xl font-bold text-white mb-6">
+                    <i class="fas fa-heartbeat mr-2"></i>
+                    System Health
+                </h3>
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center">
+                        <span class="text-white/80">Server Uptime</span>
+                        <span class="text-green-400 font-bold">99.9%</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-white/80">API Response Time</span>
+                        <span class="text-blue-400 font-bold">180ms</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-white/80">Database Health</span>
+                        <span class="text-green-400 font-bold">Excellent</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-white/80">Storage Usage</span>
+                        <span class="text-yellow-400 font-bold">68%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="glass-effect rounded-2xl p-8 slide-in" style="animation-delay: 0.4s;">
+                <h3 class="text-xl font-bold text-white mb-6">
+                    <i class="fas fa-tools mr-2"></i>
+                    Quick Actions
+                </h3>
+                <div class="space-y-3">
+                    <button class="w-full bg-blue-500/20 hover:bg-blue-500/30 text-blue-400 py-3 rounded-lg font-medium transition-all duration-300 inline-flex items-center justify-center">
+                        <i class="fas fa-sync mr-2"></i>
+                        Refresh Data
+                    </button>
+                    <button class="w-full bg-green-500/20 hover:bg-green-500/30 text-green-400 py-3 rounded-lg font-medium transition-all duration-300 inline-flex items-center justify-center">
+                        <i class="fas fa-download mr-2"></i>
+                        Export Report
+                    </button>
+                    <button class="w-full bg-purple-500/20 hover:bg-purple-500/30 text-purple-400 py-3 rounded-lg font-medium transition-all duration-300 inline-flex items-center justify-center">
+                        <i class="fas fa-cog mr-2"></i>
+                        System Settings
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Usage Chart
+        const usageCtx = document.getElementById('usageChart').getContext('2d');
+        new Chart(usageCtx, {
+            type: 'line',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    label: 'Daily Assessments',
+                    data: [45, 62, 38, 71, 56, 89, 67],
+                    borderColor: 'rgb(59, 130, 246)',
+                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: 'rgba(255, 255, 255, 0.8)'
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            color: 'rgba(255, 255, 255, 0.8)'
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        }
+                    },
+                    y: {
+                        ticks: {
+                            color: 'rgba(255, 255, 255, 0.8)'
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Distribution Chart
+        const distributionCtx = document.getElementById('distributionChart').getContext('2d');
+        new Chart(distributionCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['2-Wheeler', '4-Wheeler', '6-Wheeler'],
+                datasets: [{
+                    data: [45, 35, 20],
+                    backgroundColor: [
+                        'rgba(59, 130, 246, 0.8)',
+                        'rgba(16, 185, 129, 0.8)',
+                        'rgba(139, 92, 246, 0.8)'
+                    ],
+                    borderColor: [
+                        'rgb(59, 130, 246)',
+                        'rgb(16, 185, 129)',
+                        'rgb(139, 92, 246)'
+                    ],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: 'rgba(255, 255, 255, 0.8)',
+                            padding: 20
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}

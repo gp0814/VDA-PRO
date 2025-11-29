@@ -1,0 +1,226 @@
+{% extends "base.html" %}
+
+{% block title %}Login & Register - AutoAssess{% endblock %}
+
+{% block content %}
+<section class="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
+    <div class="max-w-md w-full">
+        <div class="glass-effect rounded-3xl p-8 slide-in">
+            <!-- Tab Buttons -->
+            <div class="flex mb-8">
+                <button id="login-tab" class="flex-1 py-3 px-6 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-l-xl font-semibold transition-all duration-300" onclick="switchTab('login')">
+                    Login
+                </button>
+                <button id="register-tab" class="flex-1 py-3 px-6 bg-white/10 text-white/80 rounded-r-xl font-semibold transition-all duration-300" onclick="switchTab('register')">
+                    Register
+                </button>
+            </div>
+
+            <!-- Login Form -->
+            <div id="login-form">
+                <div class="text-center mb-8">
+                    <div class="w-16 h-16 bg-gradient-to-br from-blue-400 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-user text-white text-2xl"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold text-white mb-2">Welcome Back</h2>
+                    <p class="text-white/80">Sign in to your account</p>
+                </div>
+
+                <form method="POST" action="{{ url_for('login') }}" class="space-y-6">
+                    <div>
+                        <label class="block text-white/80 text-sm font-medium mb-2">Email</label>
+                        <div class="relative">
+                            <i class="fas fa-envelope absolute left-3 top-1/2 transform -translate-y-1/2 text-white/60"></i>
+                            <input type="email" name="email" required 
+                                   class="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
+                                   placeholder="Enter your email">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-white/80 text-sm font-medium mb-2">Password</label>
+                        <div class="relative">
+                            <i class="fas fa-lock absolute left-3 top-1/2 transform -translate-y-1/2 text-white/60"></i>
+                            <input type="password" name="password" required 
+                                   class="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
+                                   placeholder="Enter your password">
+                        </div>
+                    </div>
+
+                    <button type="submit" 
+                            class="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white py-3 rounded-xl font-semibold hover-glow transition-all duration-300">
+                        <i class="fas fa-sign-in-alt mr-2"></i>
+                        Sign In
+                    </button>
+                </form>
+
+                <div class="mt-6 text-center">
+                    <p class="text-white/60 text-sm">
+                        Admin? Use <span class="text-blue-400">admin@gmail.com</span> / <span class="text-blue-400">admin</span>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Register Form -->
+            <div id="register-form" class="hidden">
+                <div class="text-center mb-8">
+                    <div class="w-16 h-16 bg-gradient-to-br from-green-400 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-user-plus text-white text-2xl"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold text-white mb-2">Create Account</h2>
+                    <p class="text-white/80">Join AutoAssess today</p>
+                </div>
+
+                <form method="POST" action="{{ url_for('register') }}" class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-white/80 text-sm font-medium mb-2">Username</label>
+                            <div class="relative">
+                                <i class="fas fa-user absolute left-3 top-1/2 transform -translate-y-1/2 text-white/60"></i>
+                                <input type="text" name="username" required 
+                                       class="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
+                                       placeholder="Username">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-white/80 text-sm font-medium mb-2">Age</label>
+                            <div class="relative">
+                                <i class="fas fa-calendar absolute left-3 top-1/2 transform -translate-y-1/2 text-white/60"></i>
+                                <input type="number" name="age" required min="1" max="120"
+                                       class="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
+                                       placeholder="Age">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-white/80 text-sm font-medium mb-2">Email</label>
+                        <div class="relative">
+                            <i class="fas fa-envelope absolute left-3 top-1/2 transform -translate-y-1/2 text-white/60"></i>
+                            <input type="email" name="email" required 
+                                   class="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
+                                   placeholder="Enter your email">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-white/80 text-sm font-medium mb-2">Gender</label>
+                            <div class="relative">
+                                <i class="fas fa-venus-mars absolute left-3 top-1/2 transform -translate-y-1/2 text-white/60"></i>
+                                <select name="gender" required 
+                                        class="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300">
+                                    <option value="" class="bg-gray-800">Select Gender</option>
+                                    <option value="M" class="bg-gray-800">Male</option>
+                                    <option value="F" class="bg-gray-800">Female</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-white/80 text-sm font-medium mb-2">Mobile</label>
+                            <div class="relative">
+                                <i class="fas fa-phone absolute left-3 top-1/2 transform -translate-y-1/2 text-white/60"></i>
+                                <input type="tel" name="mobile" required pattern="[0-9]{10}" maxlength="10"
+                                       class="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
+                                       placeholder="Mobile Number">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-white/80 text-sm font-medium mb-2">Password</label>
+                        <div class="relative">
+                            <i class="fas fa-lock absolute left-3 top-1/2 transform -translate-y-1/2 text-white/60"></i>
+                            <input type="password" name="password" required minlength="8"
+                                   class="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
+                                   placeholder="Create password (min 8 chars)">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-white/80 text-sm font-medium mb-2">Confirm Password</label>
+                        <div class="relative">
+                            <i class="fas fa-lock absolute left-3 top-1/2 transform -translate-y-1/2 text-white/60"></i>
+                            <input type="password" name="confirm_password" required 
+                                   class="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
+                                   placeholder="Confirm your password">
+                        </div>
+                    </div>
+
+                    <button type="submit" 
+                            class="w-full bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700 text-white py-3 rounded-xl font-semibold hover-glow transition-all duration-300">
+                        <i class="fas fa-user-plus mr-2"></i>
+                        Create Account
+                    </button>
+                </form>
+
+                <div class="mt-6 text-center">
+                    <p class="text-white/60 text-sm">
+                        Account approval required by admin
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    function switchTab(tab) {
+        const loginTab = document.getElementById('login-tab');
+        const registerTab = document.getElementById('register-tab');
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+
+        if (tab === 'login') {
+            loginTab.className = 'flex-1 py-3 px-6 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-l-xl font-semibold transition-all duration-300';
+            registerTab.className = 'flex-1 py-3 px-6 bg-white/10 text-white/80 rounded-r-xl font-semibold transition-all duration-300';
+            loginForm.classList.remove('hidden');
+            registerForm.classList.add('hidden');
+        } else {
+            loginTab.className = 'flex-1 py-3 px-6 bg-white/10 text-white/80 rounded-l-xl font-semibold transition-all duration-300';
+            registerTab.className = 'flex-1 py-3 px-6 bg-gradient-to-r from-green-500 to-blue-600 text-white rounded-r-xl font-semibold transition-all duration-300';
+            loginForm.classList.add('hidden');
+            registerForm.classList.remove('hidden');
+        }
+    }
+
+    // Form validation
+    document.addEventListener('DOMContentLoaded', function() {
+        const registerForm = document.querySelector('#register-form form');
+        if (registerForm) {
+            registerForm.addEventListener('submit', function(e) {
+                const password = registerForm.querySelector('input[name="password"]').value;
+                const confirmPassword = registerForm.querySelector('input[name="confirm_password"]').value;
+                const mobile = registerForm.querySelector('input[name="mobile"]').value;
+                const age = registerForm.querySelector('input[name="age"]').value;
+
+                if (password !== confirmPassword) {
+                    e.preventDefault();
+                    alert('Passwords do not match!');
+                    return;
+                }
+
+                if (password.length < 8) {
+                    e.preventDefault();
+                    alert('Password must be at least 8 characters long!');
+                    return;
+                }
+
+                if (mobile.length !== 10 || !/^\d+$/.test(mobile)) {
+                    e.preventDefault();
+                    alert('Mobile number must be exactly 10 digits!');
+                    return;
+                }
+
+                if (age < 1 || age > 120) {
+                    e.preventDefault();
+                    alert('Please enter a valid age between 1 and 120!');
+                    return;
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}

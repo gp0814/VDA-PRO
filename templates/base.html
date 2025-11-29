@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Vehicle Damage Assessment{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        
+        .galaxy-bg {
+            background: linear-gradient(135deg, #000004, #101038, #1d094a, #04020c);
+            background-size: 400% 400%;
+            animation: moveGradient 10s ease infinite alternate;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        @keyframes moveGradient {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 5;
+        }
+        
+        .content-overlay {
+            position: relative;
+            z-index: 10;
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            z-index: 10;
+        }
+
+        .cosmic-button {
+            background: linear-gradient(45deg, #6a11cb, #2575fc);
+            background-size: 200% 200%;
+            animation: cosmic-gradient 3s ease infinite;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        @keyframes cosmic-gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .hover-glow:hover {
+            box-shadow: 0 0 30px rgba(138, 43, 226, 0.4);
+            transform: translateY(-2px);
+            transition: all 0.3s ease;
+        }
+        
+        .floating { animation: floating 2s ease-in-out infinite; }
+        @keyframes floating {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .slide-in { animation: slideIn 0.6s ease-out; }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .pulse-glow { animation: pulseGlow 2s infinite; }
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(138, 43, 226, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(138, 43, 226, 0.6); }
+        }
+    </style>
+</head>
+<body class="min-h-screen galaxy-bg">
+
+    <div id="particles-js"></div>
+
+    <div class="content-overlay">
+        <nav class="glass-effect border-b border-white/20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center py-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-car text-white text-xl"></i>
+                        </div>
+                        <span class="text-white text-xl font-bold">AutoAssess</span>
+                    </div>
+                    <div class="hidden md:flex items-center space-x-8">
+                        <a href="{{ url_for('index') }}" class="text-white/80 hover:text-white transition-colors">Home</a>
+                        <a href="{{ url_for('about') }}" class="text-white/80 hover:text-white transition-colors">About</a>
+                        <a href="{{ url_for('contact') }}" class="text-white/80 hover:text-white transition-colors">Contact</a>
+                        {% if current_user.is_authenticated %}
+                            <a href="{{ url_for('home') }}" class="text-white/80 hover:text-white transition-colors">Dashboard</a>
+                            <a href="{{ url_for('assessment') }}" class="text-white/80 hover:text-white transition-colors">My Assessments</a>
+                            <a href="{{ url_for('logout') }}" class="bg-red-500/20 hover:bg-red-500/30 text-white px-4 py-2 rounded-lg transition-colors">Logout</a>
+                        {% else %}
+                            <a href="{{ url_for('login') }}" class="glass-effect hover:bg-white/30 text-white px-4 py-2 rounded-lg transition-colors">Login</a>
+                            <a href="{{ url_for('register') }}" class="cosmic-button text-white px-4 py-2 rounded-lg transition-all duration-300 hover:scale-105">Sign Up</a>
+                        {% endif %}
+                    </div>
+                    <div class="md:hidden">
+                        <button class="text-white" onclick="toggleMobileMenu()">
+                            <i class="fas fa-bars text-xl"></i>
+                        </button>
+                    </div>
+                </div>
+                <div id="mobile-menu" class="hidden md:hidden pb-4">
+                    <div class="flex flex-col space-y-2">
+                        <a href="{{ url_for('index') }}" class="text-white/80 hover:text-white transition-colors py-2">Home</a>
+                        <a href="{{ url_for('about') }}" class="text-white/80 hover:text-white transition-colors py-2">About</a>
+                        <a href="{{ url_for('contact') }}" class="text-white/80 hover:text-white transition-colors py-2">Contact</a>
+                        {% if current_user.is_authenticated %}
+                            <a href="{{ url_for('home') }}" class="text-white/80 hover:text-white transition-colors py-2">Dashboard</a>
+                            <a href="{{ url_for('assessment') }}" class="text-white/80 hover:text-white transition-colors py-2">My Assessments</a>
+                            <a href="{{ url_for('logout') }}" class="bg-red-500/20 hover:bg-red-500/30 text-white px-4 py-2 rounded-lg transition-colors">Logout</a>
+                        {% else %}
+                            <a href="{{ url_for('login') }}" class="glass-effect hover:bg-white/30 text-white px-4 py-2 rounded-lg transition-colors">Login</a>
+                            <a href="{{ url_for('register') }}" class="cosmic-button text-white px-4 py-2 rounded-lg transition-all duration-300 hover:scale-105">Sign Up</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+                    {% for category, message in messages %}
+                        <div class="slide-in mb-4 p-4 rounded-lg glass-effect {% if category == 'success' %}border-green-400{% elif category == 'danger' %}border-red-400{% else %}border-blue-400{% endif %}">
+                            <div class="flex items-center">
+                                <i class="fas {% if category == 'success' %}fa-check-circle text-green-400{% elif category == 'danger' %}fa-exclamation-circle text-red-400{% else %}fa-info-circle text-blue-400{% endif %} mr-3"></i>
+                                <span class="text-white">{{ message }}</span>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <main class="flex-1">
+            {% block content %}{% endblock %}
+        </main>
+
+        <footer class="glass-effect border-t border-white/20 mt-16">
+           <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div>
+                        <div class="flex items-center space-x-3 mb-4">
+                            <div class="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-car text-white"></i>
+                            </div>
+                            <span class="text-white text-lg font-bold">AutoAssess</span>
+                        </div>
+                        <p class="text-white/80">Advanced AI-powered vehicle damage assessment and cost estimation.</p>
+                    </div>
+                    <div>
+                        <h3 class="text-white font-semibold mb-4">Quick Links</h3>
+                        <div class="space-y-2">
+                            <a href="{{ url_for('about') }}" class="block text-white/80 hover:text-white transition-colors">About Us</a>
+                            <a href="{{ url_for('contact') }}" class="block text-white/80 hover:text-white transition-colors">Contact</a>
+                            <a href="#" class="block text-white/80 hover:text-white transition-colors">Privacy Policy</a>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-white font-semibold mb-4">Connect</h3>
+                        <div class="flex space-x-4">
+                            <a href="#" class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center hover:bg-white/30 transition-colors">
+                                <i class="fab fa-facebook text-white"></i>
+                            </a>
+                            <a href="#" class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center hover:bg-white/30 transition-colors">
+                                <i class="fab fa-twitter text-white"></i>
+                            </a>
+                            <a href="#" class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center hover:bg-white/30 transition-colors">
+                                <i class="fab fa-instagram text-white"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="border-t border-white/20 mt-8 pt-8 text-center">
+                    <p class="text-white/80">&copy; 2025 AutoAssess. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+    <script>
+        particlesJS('particles-js', {
+            "particles": {
+                "number": {
+                    "value": 100,
+                    "density": {
+                        "enable": true,
+                        "value_area": 800
+                    }
+                },
+                "color": {
+                    // Each particle will now be a random color from this list
+                    "value": ["#ffffff", "#c8b6ff", "#bde0fe", "#a2d2ff"]
+                },
+                "shape": {
+                    "type": "circle"
+                },
+                "opacity": {
+                    "value": 0.6, // Slightly increased opacity
+                    "random": true
+                },
+                "size": {
+                    "value": 3,
+                    "random": true
+                },
+                "line_linked": {
+                    "enable": true,
+                    "distance": 150,
+                    // Lines are a unifying subtle blue color
+                    "color": "#bde0fe",
+                    "opacity": 0.4,
+                    "width": 1
+                },
+                "move": {
+                    "enable": true,
+                    "speed": 0.5,
+                    "direction": "none",
+                    "random": false,
+                    "straight": false,
+                    "out_mode": "out",
+                    "bounce": false
+                }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": {
+                        "enable": false
+                    },
+                    "onclick": {
+                        "enable": false
+                    },
+                    "resize": true
+                }
+            },
+            "retina_detect": true
+        });
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const links = document.querySelectorAll('a[href^="#"]');
+            links.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

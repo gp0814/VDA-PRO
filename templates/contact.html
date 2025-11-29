@@ -1,0 +1,226 @@
+{% extends "base.html" %}
+
+{% block title %}Contact Us - AutoAssess{% endblock %}
+
+{% block content %}
+<section class="min-h-screen px-4 sm:px-6 lg:px-8 py-12">
+    <div class="max-w-7xl mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-16 slide-in">
+            <h1 class="text-4xl lg:text-6xl font-bold text-white mb-6">
+                Get In <span class="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Touch</span>
+            </h1>
+            <p class="text-xl text-white/80 max-w-3xl mx-auto leading-relaxed">
+                Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            <!-- Contact Form -->
+            <div class="glass-effect rounded-3xl p-8 slide-in">
+                <div class="text-center mb-8">
+                    <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4 pulse-glow">
+                        <i class="fas fa-envelope text-white text-2xl"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold text-white mb-2">Send us a Message</h2>
+                    <p class="text-white/80">We'll get back to you within 24 hours</p>
+                </div>
+
+                <form class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-white/80 text-sm font-medium mb-2">First Name</label>
+                            <div class="relative">
+                                <i class="fas fa-user absolute left-3 top-1/2 transform -translate-y-1/2 text-white/60"></i>
+                                <input type="text" required 
+                                       class="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
+                                       placeholder="Your first name">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-white/80 text-sm font-medium mb-2">Last Name</label>
+                            <div class="relative">
+                                <i class="fas fa-user absolute left-3 top-1/2 transform -translate-y-1/2 text-white/60"></i>
+                                <input type="text" required 
+                                       class="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
+                                       placeholder="Your last name">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-white/80 text-sm font-medium mb-2">Email</label>
+                        <div class="relative">
+                            <i class="fas fa-envelope absolute left-3 top-1/2 transform -translate-y-1/2 text-white/60"></i>
+                            <input type="email" required 
+                                   class="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
+                                   placeholder="your.email@example.com">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-white/80 text-sm font-medium mb-2">Subject</label>
+                        <div class="relative">
+                            <i class="fas fa-tag absolute left-3 top-1/2 transform -translate-y-1/2 text-white/60"></i>
+                            <select required 
+                                    class="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300">
+                                <option value="" class="bg-gray-800">Select a topic</option>
+                                <option value="general" class="bg-gray-800">General Inquiry</option>
+                                <option value="technical" class="bg-gray-800">Technical Support</option>
+                                <option value="business" class="bg-gray-800">Business Partnership</option>
+                                <option value="feedback" class="bg-gray-800">Feedback</option>
+                                <option value="other" class="bg-gray-800">Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-white/80 text-sm font-medium mb-2">Message</label>
+                        <div class="relative">
+                            <i class="fas fa-comment absolute left-3 top-4 text-white/60"></i>
+                            <textarea required rows="5"
+                                      class="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 resize-none"
+                                      placeholder="Tell us how we can help you..."></textarea>
+                        </div>
+                    </div>
+
+                    <button type="submit" 
+                            class="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white py-4 rounded-xl font-semibold text-lg hover-glow transition-all duration-300">
+                        <i class="fas fa-paper-plane mr-2"></i>
+                        Send Message
+                    </button>
+                </form>
+            </div>
+
+            <!-- Contact Information -->
+            <div class="space-y-8">
+                <!-- Contact Details -->
+                <div class="glass-effect rounded-2xl p-8 slide-in" style="animation-delay: 0.2s;">
+                    <h3 class="text-2xl font-bold text-white mb-6">
+                        <i class="fas fa-info-circle mr-2"></i>
+                        Contact Information
+                    </h3>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center">
+                                <i class="fas fa-envelope text-blue-400 text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-white font-medium">Email</p>
+                                <p class="text-white/80">support@autoassess.ai</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center">
+                                <i class="fas fa-phone text-green-400 text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-white font-medium">Phone</p>
+                                <p class="text-white/80">+91 98765 43210</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center">
+                                <i class="fas fa-map-marker-alt text-purple-400 text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-white font-medium">Office</p>
+                                <p class="text-white/80">Bengaluru, Karnataka, India</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-orange-500/20 rounded-xl flex items-center justify-center">
+                                <i class="fas fa-clock text-orange-400 text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-white font-medium">Response Time</p>
+                                <p class="text-white/80">Within 24 hours</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ Section -->
+                <div class="glass-effect rounded-2xl p-8 slide-in" style="animation-delay: 0.4s;">
+                    <h3 class="text-2xl font-bold text-white mb-6">
+                        <i class="fas fa-question-circle mr-2"></i>
+                        Frequently Asked Questions
+                    </h3>
+                    
+                    <div class="space-y-4">
+                        <div class="border-l-4 border-blue-400 pl-4">
+                            <h4 class="text-white font-semibold mb-2">How accurate is the AI assessment?</h4>
+                            <p class="text-white/80 text-sm">Our AI models achieve 95%+ accuracy across all vehicle types.</p>
+                        </div>
+
+                        <div class="border-l-4 border-green-400 pl-4">
+                            <h4 class="text-white font-semibold mb-2">What image formats are supported?</h4>
+                            <p class="text-white/80 text-sm">We support JPG, JPEG, PNG formats up to 10MB in size.</p>
+                        </div>
+
+                        <div class="border-l-4 border-purple-400 pl-4">
+                            <h4 class="text-white font-semibold mb-2">Is my data secure?</h4>
+                            <p class="text-white/80 text-sm">Yes, all data is encrypted and processed securely on our servers.</p>
+                        </div>
+
+                        <div class="border-l-4 border-orange-400 pl-4">
+                            <h4 class="text-white font-semibold mb-2">Can I use reports for insurance?</h4>
+                            <p class="text-white/80 text-sm">Yes, our PDF reports are professionally formatted for insurance claims.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Social Links -->
+                <div class="glass-effect rounded-2xl p-8 text-center slide-in" style="animation-delay: 0.6s;">
+                    <h3 class="text-2xl font-bold text-white mb-6">
+                        <i class="fas fa-share-alt mr-2"></i>
+                        Follow Us
+                    </h3>
+                    <div class="flex justify-center space-x-4">
+                        <a href="#" class="w-12 h-12 bg-blue-500/20 hover:bg-blue-500/30 rounded-xl flex items-center justify-center transition-all duration-300 hover-glow">
+                            <i class="fab fa-facebook text-blue-400 text-xl"></i>
+                        </a>
+                        <a href="#" class="w-12 h-12 bg-sky-500/20 hover:bg-sky-500/30 rounded-xl flex items-center justify-center transition-all duration-300 hover-glow">
+                            <i class="fab fa-twitter text-sky-400 text-xl"></i>
+                        </a>
+                        <a href="#" class="w-12 h-12 bg-blue-600/20 hover:bg-blue-600/30 rounded-xl flex items-center justify-center transition-all duration-300 hover-glow">
+                            <i class="fab fa-linkedin text-blue-400 text-xl"></i>
+                        </a>
+                        <a href="#" class="w-12 h-12 bg-pink-500/20 hover:bg-pink-500/30 rounded-xl flex items-center justify-center transition-all duration-300 hover-glow">
+                            <i class="fab fa-instagram text-pink-400 text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    // Form submission handler
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form');
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Show success message
+            const submitBtn = document.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-check mr-2"></i>Message Sent!';
+            submitBtn.className = 'w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white py-4 rounded-xl font-semibold text-lg transition-all duration-300';
+            
+            // Reset form
+            setTimeout(() => {
+                form.reset();
+                submitBtn.innerHTML = originalText;
+                submitBtn.className = 'w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white py-4 rounded-xl font-semibold text-lg hover-glow transition-all duration-300';
+            }, 2000);
+        });
+    });
+</script>
+{% endblock %}

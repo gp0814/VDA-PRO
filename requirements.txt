@@ -1,0 +1,10 @@
+Flask
+Flask-SQLAlchemy
+Flask-Bcrypt
+Flask-Login
+Flask-Migrate
+ultralytics
+numpy
+opencv-python
+Pillow
+reportlab

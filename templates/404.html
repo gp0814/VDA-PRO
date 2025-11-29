@@ -1,0 +1,19 @@
+<!-- templates/404.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Page Not Found</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
+        h1 { font-size: 50px; color: #ff4d4d; }
+        p { font-size: 20px; }
+        a { text-decoration: none; color: #007bff; }
+    </style>
+</head>
+<body>
+    <h1>404</h1>
+    <p>Oops! The page you are looking for doesn’t exist.</p>
+    <a href="{{ url_for('index') }}">Go Home</a>
+</body>
+</html>

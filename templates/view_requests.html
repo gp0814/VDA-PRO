@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+
+{% block title %}Pending Requests - AutoAssess Admin{% endblock %}
+
+{% block content %}
+<section class="min-h-screen px-4 sm:px-6 lg:px-8 py-12">
+    <div class="max-w-7xl mx-auto">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-12 slide-in">
+            <div>
+                <h1 class="text-4xl lg:text-5xl font-bold text-white mb-2">
+                    Pending <span class="bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent">Requests</span>
+                </h1>
+                <p class="text-xl text-white/80">Review and approve user registrations</p>
+            </div>
+            <a href="{{ url_for('admin') }}" 
+               class="bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 inline-flex items-center">
+                <i class="fas fa-arrow-left mr-2"></i>
+                Back to Dashboard
+            </a>
+        </div>
+
+        {% if data %}
+            <!-- Pending Requests Stats -->
+            <div class="glass-effect rounded-3xl p-6 mb-12 slide-in">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-12 h-12 bg-yellow-500 rounded-full flex items-center justify-center">
+                            <i class="fas fa-clock text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-2xl font-bold text-white">{{ data|length }} Pending Requests</h2>
+                            <p class="text-white/80">Users waiting for approval</p>
+                        </div>
+                    </div>
+                    <button onclick="approveAll()" 
+                            class="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 inline-flex items-center">
+                        <i class="fas fa-check-double mr-2"></i>
+                        Approve All
+                    </button>
+                </div>
+            </div>
+
+            <!-- Requests Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for user in data %}
+                    <div class="glass-effect rounded-2xl p-6 hover-glow slide-in" style="animation-delay: {{ loop.index0 * 0.1 }}s;">
+                        <!-- User Avatar -->
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center mr-3">
+                                <span class="text-white font-bold text-lg">{{ user.username[0]|upper }}</span>
+                            </div>
+                            <div>
+                                <h3 class="text-white font-bold">{{ user.username }}</h3>
+                                <p class="text-white/60 text-sm">ID: #{{ user.id }}</p>
+                            </div>
+                        </div>
+
+                        <!-- User Details -->
+                        <div class="space-y-3 mb-6">
+                            <div class="flex items-center space-x-2">
+                                <i class="fas fa-envelope text-blue-400 w-4"></i>
+                                <span class="text-white/80 text-sm">{{ user.email }}</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <i class="fas fa-birthday-cake text-purple-400 w-4"></i>
+                                <span class="text-white/80 text-sm">{{ user.age }} years old</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <i class="fas fa-{{ 'mars' if user.gender == 'M' else 'venus' }} text-pink-400 w-4"></i>
+                                <span class="text-white/80 text-sm">{{ 'Male' if user.gender == 'M' else 'Female' }}</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <i class="fas fa-phone text-green-400 w-4"></i>
+                                <span class="text-white/80 text-sm">{{ user.mobile }}</span>
+                            </div>
+                        </div>
+
+                        <!-- Status Badge -->
+                        <div class="text-center mb-4">
+                            <span class="px-4 py-2 bg-yellow-500/20 text-yellow-400 rounded-full text-sm font-medium">
+                                <i class="fas fa-clock mr-1"></i>
+                                Pending Approval
+                            </span>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="flex space-x-3">
+                            <a href="{{ url_for('update_status', id=user.id) }}" 
+                               class="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white py-3 rounded-xl font-semibold transition-all duration-300 text-center">
+                                <i class="fas fa-check mr-2"></i>
+                                Approve
+                            </a>
+                            <button onclick="deleteUser({{ user.id }})" 
+                                    class="bg-red-500/20 hover:bg-red-500/30 text-red-400 px-4 py-3 rounded-xl font-semibold transition-all duration-300">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+        {% else %}
+            <!-- Empty State -->
+            <div class="text-center slide-in">
+                <div class="glass-effect rounded-3xl p-12">
+                    <div class="w-24 h-24 bg-gradient-to-br from-green-500 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-check-circle text-white text-3xl"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold text-white mb-4">All Caught Up!</h2>
+                    <p class="text-white/80 mb-8 max-w-md mx-auto">
+                        There are no pending user registration requests at the moment.
+                    </p>
+                    <a href="{{ url_for('admin') }}" 
+                       class="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-8 py-3 rounded-xl font-semibold transition-all duration-300 inline-flex items-center">
+                        <i class="fas fa-arrow-left mr-2"></i>
+                        Back to Dashboard
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Delete Confirmation Modal -->
+<div id="deleteModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+    <div class="glass-effect rounded-2xl p-8 max-w-md w-full">
+        <div class="text-center">
+            <div class="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-exclamation-triangle text-white text-2xl"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-white mb-4">Reject User Request</h3>
+            <p class="text-white/80 mb-6">Are you sure you want to reject this user registration? This action cannot be undone.</p>
+            
+            <div class="flex space-x-4">
+                <button onclick="closeDeleteModal()" 
+                        class="flex-1 bg-gray-500/20 hover:bg-gray-500/30 text-white py-3 rounded-xl font-semibold transition-all duration-300">
+                    Cancel
+                </button>
+                <button id="confirmDelete" 
+                        class="flex-1 bg-red-500 hover:bg-red-600 text-white py-3 rounded-xl font-semibold transition-all duration-300">
+                    Reject User
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let userToDelete = null;
+
+    function deleteUser(userId) {
+        userToDelete = userId;
+        document.getElementById('deleteModal').classList.remove('hidden');
+    }
+
+    function closeDeleteModal() {
+        document.getElementById('deleteModal').classList.add('hidden');
+        userToDelete = null;
+    }
+
+    document.getElementById('confirmDelete').addEventListener('click', function() {
+        if (userToDelete) {
+            window.location.href = `/delete/${userToDelete}/`;
+        }
+    });
+
+    function approveAll() {
+        if (confirm('Are you sure you want to approve all pending requests?')) {
+            // You can implement this functionality in your Flask app
+            alert('Feature to be implemented in backend');
+        }
+    }
+
+    // Close modal on escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeDeleteModal();
+        }
+    });
+</script>
+{% endblock %}

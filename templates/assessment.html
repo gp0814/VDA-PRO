@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+
+{% block title %}Assessment History - AutoAssess{% endblock %}
+
+{% block content %}
+<section class="min-h-screen px-4 sm:px-6 lg:px-8 py-12">
+    <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-12 slide-in">
+            <h1 class="text-4xl lg:text-5xl font-bold text-white mb-4">
+                Assessment <span class="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">History</span>
+            </h1>
+            <p class="text-xl text-white/80">
+                View all your previous vehicle damage assessments
+            </p>
+        </div>
+
+        {% if results %}
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+                <div class="glass-effect rounded-2xl p-6 text-center slide-in">
+                    <div class="text-3xl font-bold text-blue-400 mb-2">{{ results|length }}</div>
+                    <div class="text-white/80">Total Assessments</div>
+                </div>
+                <div class="glass-effect rounded-2xl p-6 text-center slide-in" style="animation-delay: 0.1s;">
+                    <div class="text-3xl font-bold text-green-400 mb-2">₹{{ "%.0f"|format(results|sum(attribute='total_cost')) }}</div>
+                    <div class="text-white/80">Total Cost</div>
+                </div>
+                <div class="glass-effect rounded-2xl p-6 text-center slide-in" style="animation-delay: 0.2s;">
+                    <div class="text-3xl font-bold text-purple-400 mb-2">{{ results|selectattr('vehicle_type', 'equalto', '4wheeler')|list|length }}</div>
+                    <div class="text-white/80">4-Wheeler Assessments</div>
+                </div>
+                <div class="glass-effect rounded-2xl p-6 text-center slide-in" style="animation-delay: 0.3s;">
+                    <div class="text-3xl font-bold text-pink-400 mb-2">₹{{ "%.0f"|format(results|sum(attribute='total_cost') / results|length) if results|length > 0 else 0 }}</div>
+                    <div class="text-white/80">Average Cost</div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                {% for result in results %}
+                    <div class="glass-effect rounded-2xl p-6 hover-glow slide-in" style="animation-delay: {{ loop.index0 * 0.1 }}s;">
+                        <div class="flex items-start justify-between mb-4">
+                            <div>
+                                <h3 class="text-xl font-bold text-white mb-1">{{ result.vehicle_brand }}</h3>
+                                <p class="text-white/60 text-sm">{{ result.created_at.strftime('%B %d, %Y at %I:%M %p') }}</p>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="px-3 py-1 bg-blue-500/20 text-blue-400 rounded-full text-sm font-medium">
+                                    {{ result.vehicle_type|title }}
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <div class="flex items-center space-x-2 mb-2">
+                                <i class="fas fa-exclamation-triangle text-yellow-400"></i>
+                                <span class="text-white font-medium">Damages Detected:</span>
+                            </div>
+                            <div class="bg-white/10 rounded-lg p-3 space-y-2">
+                                {% for damage in result.damages %}
+                                <div class="flex justify-between items-center">
+                                    <span class="text-white capitalize">{{ damage.detected_damage }}</span>
+                                    <span class="text-green-400 font-bold">₹{{ damage.cost }}</span>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            </div>
+
+                        <div class="bg-gradient-to-r from-green-500/20 to-blue-500/20 rounded-lg p-3 mb-4">
+                            <div class="flex justify-between items-center">
+                                <span class="text-white font-semibold">Total Cost:</span>
+                                <span class="text-xl font-bold text-green-400">₹{{ result.total_cost }}</span>
+                            </div>
+                        </div>
+
+                        <div class="flex space-x-3">
+                            <button onclick="viewImage('{{ url_for('static', filename=result.image_path) }}')" 
+                                    class="flex-1 bg-blue-500/20 hover:bg-blue-500/30 text-blue-400 py-2 px-4 rounded-lg font-medium transition-all duration-300 inline-flex items-center justify-center">
+                                <i class="fas fa-eye mr-2"></i>
+                                View Image
+                            </button>
+                            <button class="flex-1 bg-green-500/20 hover:bg-green-500/30 text-green-400 py-2 px-4 rounded-lg font-medium transition-all duration-300 inline-flex items-center justify-center">
+                                <i class="fas fa-download mr-2"></i>
+                                Download PDF
+                            </button>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="text-center mt-12">
+                <a href="{{ url_for('upload') }}" 
+                   class="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-8 py-3 rounded-xl font-semibold transition-all duration-300 inline-flex items-center">
+                    <i class="fas fa-plus mr-2"></i>
+                    New Assessment
+                </a>
+            </div>
+
+        {% else %}
+            <div class="text-center slide-in">
+                <div class="glass-effect rounded-3xl p-12">
+                    <div class="w-24 h-24 bg-gradient-to-br from-gray-500 to-gray-600 rounded-full flex items-center justify-center mx-auto mb-6 opacity-50">
+                        <i class="fas fa-folder-open text-white text-3xl"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold text-white mb-4">No Assessments Yet</h2>
+                    <p class="text-white/80 mb-8 max-w-md mx-auto">
+                        You haven't performed any vehicle damage assessments yet. Start your first assessment now!
+                    </p>
+                    <a href="{{ url_for('upload') }}" 
+                       class="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-8 py-4 rounded-xl font-semibold text-lg hover-glow transition-all duration-300 inline-flex items-center">
+                        <i class="fas fa-camera mr-2"></i>
+                        Start First Assessment
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+<div id="imageModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4" onclick="closeModal()">
+    <div class="max-w-4xl w-full">
+        <div class="glass-effect rounded-2xl p-4">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-white">Assessment Image</h3>
+                <button onclick="closeModal()" class="text-white/60 hover:text-white transition-colors">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+            <img id="modalImage" class="w-full rounded-xl" alt="Assessment Image">
+        </div>
+    </div>
+</div>
+
+<script>
+    function viewImage(imagePath) {
+        const modal = document.getElementById('imageModal');
+        const modalImage = document.getElementById('modalImage');
+        modalImage.src = imagePath; 
+        modal.classList.remove('hidden');
+    }
+
+    function closeModal() {
+        const modal = document.getElementById('imageModal');
+        modal.classList.add('hidden');
+    }
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeModal();
+        }
+    });
+</script>
+{% endblock %}

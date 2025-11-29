@@ -1,0 +1,187 @@
+{% extends "base.html" %}
+
+{% block title %}Vehicle Assessment - AutoAssess{% endblock %}
+
+{% block content %}
+<section class="min-h-screen px-4 sm:px-6 lg:px-8 py-12">
+    <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-12 slide-in">
+            <h1 class="text-4xl lg:text-5xl font-bold text-white mb-4">
+                Vehicle Damage <span class="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Assessment</span>
+            </h1>
+            <p class="text-xl text-white/80">
+                Upload your vehicle image for AI-powered damage analysis
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="glass-effect rounded-3xl p-8 slide-in">
+                <div class="text-center mb-8">
+                    <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4 pulse-glow">
+                        <i class="fas fa-cloud-upload-alt text-white text-2xl"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold text-white mb-2">Upload Vehicle Image</h2>
+                    <p class="text-white/80">Choose vehicle type, brand, and upload image</p>
+                </div>
+
+                <form method="POST" enctype="multipart/form-data" class="space-y-6">
+                    <div>
+                        <label class="block text-white/80 text-sm font-medium mb-2">Vehicle Type</label>
+                        <div class="relative">
+                            <i class="fas fa-car absolute left-3 top-1/2 transform -translate-y-1/2 text-white/60"></i>
+                            <select name="vehicle_type" required 
+                                    class="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
+                                    onchange="updateBrands()">
+                                <option value="" class="bg-gray-800">Select Vehicle Type</option>
+                                <option value="2wheeler" class="bg-gray-800">2-Wheeler</option>
+                                <option value="4wheeler" class="bg-gray-800">4-Wheeler</option>
+                                <option value="6wheeler" class="bg-gray-800">6-Wheeler</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-white/80 text-sm font-medium mb-2">Vehicle Brand</label>
+                        <div class="relative">
+                            <i class="fas fa-tag absolute left-3 top-1/2 transform -translate-y-1/2 text-white/60"></i>
+                            <select name="vehicle_brand" required 
+                                    class="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
+                                    id="brand-select">
+                                <option value="" class="bg-gray-800">Select Brand First</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-white/80 text-sm font-medium mb-2">Vehicle Image</label>
+                        <div class="relative">
+                            <input type="file" name="image_file" accept="image/*" required 
+                                   class="hidden" id="file-input" onchange="previewImage(event)">
+                            <label for="file-input" 
+                                   class="w-full h-32 border-2 border-dashed border-white/30 rounded-xl flex flex-col items-center justify-center cursor-pointer hover:border-blue-400 hover:bg-white/5 transition-all duration-300">
+                                <i class="fas fa-camera text-white/60 text-3xl mb-2"></i>
+                                <span class="text-white/80">Click to upload image</span>
+                                <span class="text-white/60 text-sm">PNG, JPG, JPEG up to 10MB</span>
+                            </label>
+                        </div>
+                        
+                        <div id="image-preview" class="mt-4 hidden">
+                            <img id="preview-img" class="w-full h-48 object-cover rounded-xl">
+                        </div>
+                    </div>
+
+                    <button type="submit" 
+                            class="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white py-4 rounded-xl font-semibold text-lg hover-glow transition-all duration-300">
+                        <i class="fas fa-magic mr-2"></i>
+                        Analyze Damage
+                    </button>
+                </form>
+            </div>
+
+            <div class="space-y-8">
+                {% if image_filename %}
+                    <div class="glass-effect rounded-3xl p-8 slide-in">
+                        <h2 class="text-2xl font-bold text-white mb-6 text-center">
+                            <i class="fas fa-search mr-2"></i>
+                            Analysis Results
+                        </h2>
+                        
+                        <div class="mb-6">
+                            <img src="{{ url_for('static', filename=image_filename) }}" alt="Processed Vehicle Image" class="w-full rounded-lg shadow-lg">
+                        </div>
+
+                        <div class="space-y-3 mb-6">
+                            <h3 class="text-lg font-semibold text-white mb-3">Detected Damages:</h3>
+                            {% for damage in damage_details %}
+                                <div class="flex justify-between items-center bg-white/10 rounded-lg p-3">
+                                    <span class="text-white capitalize">{{ damage.damage_type }}</span>
+                                    <span class="text-green-400 font-bold">₹{{ damage.cost }}</span>
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="bg-gradient-to-r from-green-500/20 to-blue-500/20 rounded-xl p-4 mb-6">
+                            <div class="flex justify-between items-center">
+                                <span class="text-white text-lg font-semibold">Total Repair Cost:</span>
+                                <span class="text-2xl font-bold text-green-400">₹{{ repair_cost }}</span>
+                            </div>
+                        </div>
+
+                        {% if pdf_filename %}
+                            <a href="{{ url_for('static', filename=pdf_filename) }}" 
+                               class="w-full bg-gradient-to-r from-red-500 to-orange-600 hover:from-red-600 hover:to-orange-700 text-white py-3 rounded-xl font-semibold transition-all duration-300 inline-flex items-center justify-center"
+                               download>
+                                <i class="fas fa-download mr-2"></i>
+                                Download PDF Report
+                            </a>
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <div class="glass-effect rounded-3xl p-8 slide-in">
+                        <h2 class="text-2xl font-bold text-white mb-6 text-center">
+                            <i class="fas fa-info-circle mr-2"></i>
+                            Assessment Instructions
+                        </h2>
+                        <p class="text-white/80">Follow the steps to analyze your vehicle damage.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    const vehicleBrands = {
+        "2wheeler": [
+            "Hero Splendor",
+            "Honda Activa", 
+            "Honda Shine",
+            "Bajaj Pulsar",
+            "TVS Jupiter"
+        ],
+        "4wheeler": [
+            "Maruti Suzuki: Swift",
+            "Tata Motors: Nexon",
+            "Hyundai: Creta", 
+            "Mahindra: Scorpio",
+            "Toyota: Innova Crysta"
+        ],
+        "6wheeler": [
+            "Bharat Benz 1923C Tipper",
+            "Tata LPT 1916",
+            "Tata Signa 1918.k",
+            "Mahindra Furio 16 Truck",
+            "Bharat Benz 1415RE Truck"
+        ]
+    };
+
+    function updateBrands() {
+        const vehicleType = document.querySelector('select[name="vehicle_type"]').value;
+        const brandSelect = document.getElementById('brand-select');
+        brandSelect.innerHTML = '<option value="" class="bg-gray-800">Select Brand</option>';
+        if (vehicleType && vehicleBrands[vehicleType]) {
+            vehicleBrands[vehicleType].forEach(brand => {
+                const option = document.createElement('option');
+                option.value = brand;
+                option.textContent = brand;
+                option.className = 'bg-gray-800';
+                brandSelect.appendChild(option);
+            });
+        }
+    }
+
+    function previewImage(event) {
+        const file = event.target.files[0];
+        const preview = document.getElementById('image-preview');
+        const previewImg = document.getElementById('preview-img');
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                previewImg.src = e.target.result;
+                preview.classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+</script>
+{% endblock %}
