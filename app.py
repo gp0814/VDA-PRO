@@ -335,8 +335,15 @@ def generate_pdf(vehicle_type, brand, damage_details, total_cost, image_path):
     return filename
 
 # --- Routes ---
+@app.context_processor
+def inject_env():
+    return {
+        'GMAP_API_URL': os.environ.get('GMAP_API_KEY')
+    }
+
 @app.route('/')
 def index():
+    
     return render_template('index.html')
 
 @app.route('/about')
